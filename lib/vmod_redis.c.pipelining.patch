@@ -1,0 +1,119 @@
+--- vmod_redis.c	2011-12-07 09:12:55.000000000 +0100
++++ vmod_redis.c.woj	2012-02-22 03:06:14.688310109 +0100
+@@ -150,3 +150,115 @@
+ 	
+ 	return ret;
+ }
++
++void
++vmod_pipeline(struct sess *sp, struct vmod_priv *priv)
++{
++	config_t *cfg;
++	redisContext *c;
++
++	LOG_T("redis(%x): pipeline %p\n", pthread_self(), priv->priv);
++
++	cfg = priv->priv;
++	if (cfg == NULL) {
++		priv->priv = cfg = malloc(sizeof(config_t));
++		priv->free = free;
++		cfg->host = strdup("127.0.0.1");
++		cfg->port = 6379;
++	}
++
++	if ((c = pthread_getspecific(redis_key)) == NULL) {
++		c = redisConnect(cfg->host, cfg->port);
++		if (c->err) {
++			LOG_E("redis error (connect): %s\n", c->errstr);
++		}
++		(void)pthread_setspecific(redis_key, c);
++	}
++
++	if (c->err == REDIS_ERR_EOF) {
++		c = redisConnect(cfg->host, cfg->port);
++		if (c->err) {
++			LOG_E("redis error (reconnect): %s\n", c->errstr);
++			redisFree(c);
++		} else {
++			redisFree(pthread_getspecific(redis_key));
++			(void)pthread_setspecific(redis_key, c);
++		}
++	}
++}
++
++void
++vmod_push(struct sess *sp, struct vmod_priv *priv, const char *command)
++{
++	redisContext *c;
++
++	LOG_T("redis(%x): push %s %p\n", pthread_self(), command, priv->priv);
++
++	c = pthread_getspecific(redis_key);
++	redisAppendCommand(c, command);
++}
++
++const char *
++vmod_pop(struct sess *sp, struct vmod_priv *priv)
++{
++	char buf[100];
++	const char *ret = NULL;
++	redisContext *c;
++	redisReply *reply = NULL;
++
++	LOG_T("redis(%x): pop %p\n", pthread_self(), priv->priv);
++
++	c = pthread_getspecific(redis_key);
++	redisGetReply(c,&reply);
++
++	if (reply == NULL) {
++		LOG_E("redis error (command): err=%d errstr=%s\n", c->err, c->errstr);
++		goto done;
++	}
++
++	switch (reply->type) {
++	case REDIS_REPLY_STATUS:
++		ret = strdup(reply->str);
++		break;
++	case REDIS_REPLY_ERROR:
++		ret = strdup(reply->str);
++		break;
++	case REDIS_REPLY_INTEGER:
++//		ret = strdup("integer");	/* FIXME */
++		snprintf(buf, sizeof(buf), "%ld", reply->integer);
++		ret = strdup(buf);
++		break;
++	case REDIS_REPLY_NIL:
++		ret = NULL;
++		break;
++	case REDIS_REPLY_STRING:
++		ret = strdup(reply->str);
++		break;
++	case REDIS_REPLY_ARRAY:
++		ret = strdup("array");
++		break;
++	default:
++		ret = strdup("unexpected");
++	}
++
++	freeReplyObject(reply);
++
++done:
++	return ret;
++}
++
++void
++vmod_pop2(struct sess *sp, struct vmod_priv *priv)
++{
++	redisContext *c;
++	redisReply *reply = NULL;
++
++	LOG_T("redis(%x): pop %p\n", pthread_self(), priv->priv);
++
++	c = pthread_getspecific(redis_key);
++	redisGetReply(c,&reply);
++
++	if (reply == NULL) {
++		LOG_E("redis error (command): err=%d errstr=%s\n", c->err, c->errstr);
++	}
++}
+

@@ -1,0 +1,11 @@
+K 25
+svn:wc:ra_dav:version-url
+V 26
+/svn/!svn/ver/92/trunk/vcl
+END
+varnish-apikey.vcl
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/92/trunk/vcl/varnish-apikey.vcl
+END

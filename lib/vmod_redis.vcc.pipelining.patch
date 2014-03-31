@@ -1,0 +1,14 @@
+--- vmod_redis.vcc	2011-12-07 09:12:55.000000000 +0100
++++ vmod_redis.vcc.woj	2012-02-22 03:03:15.748301449 +0100
+@@ -1,4 +1,8 @@
+ Module redis
+ Init init_function
+-Function VOID send(PRIV_CALL, STRING)
+-Function STRING call(PRIV_CALL, STRING)
++Function VOID send(PRIV_VCL, STRING)
++Function STRING call(PRIV_VCL, STRING)
++Function VOID pipeline(PRIV_VCL)
++Function VOID push(PRIV_VCL, STRING)
++Function STRING pop(PRIV_VCL)
++Function VOID pop2(PRIV_VCL)
+

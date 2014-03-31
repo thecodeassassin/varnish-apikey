@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 27
+/svn/!svn/ver/167/trunk/lib
+END
+mhash-0.9.9.9.tar.bz2
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/7/trunk/lib/mhash-0.9.9.9.tar.bz2
+END
+vmod_redis.c.pipelining.patch
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/167/trunk/lib/vmod_redis.c.pipelining.patch
+END
+zephirworks-libvmod-redis-ef73a48.tar.gz
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/7/trunk/lib/zephirworks-libvmod-redis-ef73a48.tar.gz
+END
+antirez-hiredis-v0.10.1-29-g857b269.tar.gz
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/7/trunk/lib/antirez-hiredis-v0.10.1-29-g857b269.tar.gz
+END
+varnish-3.0.2.tar.gz
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/7/trunk/lib/varnish-3.0.2.tar.gz
+END
+varnish-libvmod-digest-0.3-1-g6fa5034.tar.gz
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/7/trunk/lib/varnish-libvmod-digest-0.3-1-g6fa5034.tar.gz
+END
+vmod_redis.vcc.pipelining.patch
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/167/trunk/lib/vmod_redis.vcc.pipelining.patch
+END
